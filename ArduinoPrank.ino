@@ -1,13 +1,24 @@
 /*
 Keyboard and mouse Prank using Arduino Leonardo
- */
+*/
  
 // Configs
-const int delayLevel = 5; //1-10
+int delayLevel = 5; //1-10
 
 
 void setup() {
   Serial.begin(9600);
+  
+  pinMode(1, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  pinMode(8, INPUT_PULLUP);
+  pinMode(9, INPUT_PULLUP);
+  pinMode(10, INPUT_PULLUP);
   
   // initialize control:
   Mouse.begin();
@@ -17,10 +28,12 @@ void setup() {
 void loop() {
   startRandSeed();
   
+  checkDelayLevel();
+  
   //Wait to start
   executeDelay(30,90);  
   
-  int randPrank = random(3, 4);//TEMP TODO:FIX
+  int randPrank = random(1, 7);
   switch (randPrank) {
     case 1:    
       mouseClickPrank(3);
@@ -153,15 +166,25 @@ void keyboardHoldKeyPrank(int repeats){
 }
 
 /////AUX
+void checkDelayLevel(){
+ for(int i=1; i<=10; i++){
+   if(digitalRead(i) == LOW){
+     delayLevel = i;
+     break;
+   }
+ } 
+ Serial.print("Delay Level: "); Serial.println(delayLevel);
+}
+
 void startRandSeed(){
-  randomSeed(analogRead(0)+analogRead(1));
+  int seed = analogRead(0)+analogRead(1);
+  Serial.print("Seed: "); Serial.println(seed);
+  randomSeed(seed);
 }
 
 void executeDelay(int minDelay, int maxDelay){
   long randomDelay = random(minDelay,maxDelay); //generate random number for delay
   long thisDelay = randomDelay * long (delayLevel);
-  
-  thisDelay = 10;//TEMP TODO:REMOVE
   
   Serial.print("Wating ");Serial.print(thisDelay);Serial.println(" seconds");
   delay(thisDelay*1000);
