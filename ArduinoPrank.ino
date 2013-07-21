@@ -20,27 +20,39 @@ void loop() {
   //Wait to start
   executeDelay(30,90);  
   
-  int randPrank = random(4, 5);
+  int randPrank = random(1, 2);
   switch (randPrank) {
     case 1:    
-      mouseJumpPrank(3,400);
+      mouseClickPrank(3);
       break;
     case 2:    
-      mouseJitterPrank(3,10);
+      mouseJumpPrank(3,400);
       break;
     case 3:    
-      keyboardTypePrank(3);
+      mouseJitterPrank(3,10);
       break;
     case 4:    
+      keyboardTypePrank(3);
+      break;
+    case 5:    
       keyboardHoldKeyPrank(3);
       break;
     default:
-      Serial.print("Default");      
+      Serial.print("Default");
     } 
 }
 
 
 //////Pranks
+void mouseClickPrank(int repeats){
+  Serial.println("Click: "+repeats);
+  
+  for (int i=0; i<repeats; i++){
+    mouseClick();    
+    executeDelay(5,10);
+  }
+}
+
 void mouseJumpPrank(int repeats, int distance){
   Serial.print("Jump: "+repeats);
   Serial.println(" "+distance);
@@ -122,8 +134,6 @@ void keyboardHoldKeyPrank(int repeats){
    }
 }
 
-
-
 /////AUX
 void startRandSeed(){
   randomSeed(analogRead(0)+analogRead(1));
@@ -158,5 +168,35 @@ void jitter(int duration){
     Mouse.move (-10,0);
     delay (10);
     i++;
-  }
+  } 
+}
+
+void mouseClick(){
+  int randclick = random(1, 4);
+  switch (randclick) {
+    case 1:
+      Serial.println("L Click");
+        Mouse.press(MOUSE_LEFT);
+        delay(100);
+        Mouse.release(MOUSE_LEFT);
+      break;
+    case 2:
+       Serial.println("DL Click");
+        Mouse.press(MOUSE_LEFT);
+        delay(100);
+        Mouse.release(MOUSE_LEFT);
+        delay(100);
+        Mouse.press(MOUSE_LEFT);
+        delay(100);
+        Mouse.release(MOUSE_LEFT);
+      break;     
+    case 3:
+       Serial.println("R Click");
+       Mouse.press(MOUSE_RIGHT);
+       delay(100);
+       Mouse.release(MOUSE_RIGHT);
+      break;  
+    default:
+      Keyboard.print("Default Click");   
+   }
 }
