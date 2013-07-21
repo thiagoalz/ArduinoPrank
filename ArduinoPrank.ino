@@ -3,7 +3,7 @@ Keyboard and mouse Prank using Arduino Leonardo
  */
  
 // Configs
-const int delayLevel = 8; //1-10
+const int delayLevel = 5; //1-10
 
 
 void setup() {
@@ -20,7 +20,7 @@ void loop() {
   //Wait to start
   executeDelay(30,90);  
   
-  int randPrank = random(2, 3);//TEMP TODO:FIX
+  int randPrank = random(3, 4);//TEMP TODO:FIX
   switch (randPrank) {
     case 1:    
       mouseClickPrank(3);
@@ -29,16 +29,19 @@ void loop() {
       mouseJumpPrank(3,100, 50);
       break;
     case 3:    
-      mouseJitterPrank(3,10);
+      mouseWheelPrank(3);
       break;
     case 4:    
-      keyboardTypePrank(3);
+      mouseJitterPrank(3,10);
       break;
     case 5:    
+      keyboardTypePrank(3);
+      break;
+    case 6:    
       keyboardHoldKeyPrank(3);
       break;
     default:
-      Serial.print("Default");
+      Serial.print("Default Prank");
     } 
 }
 
@@ -76,6 +79,15 @@ void mouseJitterPrank(int repeats, int duration){
   for (int i=0; i<repeats; i++){
     jitter(duration);    
     executeDelay(1,10);
+  }
+}
+
+void mouseWheelPrank(int repeats){
+  Serial.print("Wheel: "); Serial.println(repeats);
+  
+  for (int i=0; i<repeats; i++){
+    moveWheel();    
+    executeDelay(5,10);
   }
 }
 
@@ -160,8 +172,18 @@ void jump(int howFar){
   
   int rand1= random(0, howFar);
   int rand2= random(howFar, (howFar*2));  
-  Mouse.move ( rand1 ,rand2);
+  Mouse.move ( rand1 ,rand2, 0);
   delay (2);
+}
+
+void moveWheel(){
+  Mouse.move ( 0 ,0, -20);
+  delay (150);
+  Mouse.move ( 0 ,0, 20);
+  delay (150);
+  Mouse.move ( 0 ,0, -50);
+  
+  Mouse.click();
 }
 
 void jitter(int duration){
