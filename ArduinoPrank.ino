@@ -26,12 +26,15 @@ void setup() {
 }
 
 void loop() {
+  delay(20000);
   startRandSeed();
   
   checkDelayLevel();
   
   //Wait to start
-  executeDelay(30,90);  
+  executeDelay(30,90);
+  
+  Serial.println("====================");
   
   int randPrank = random(1, 7);
   switch (randPrank) {
@@ -55,7 +58,9 @@ void loop() {
       break;
     default:
       Serial.print("Default Prank");
-    } 
+    }
+  
+  Serial.println("====================");
 }
 
 
@@ -79,7 +84,7 @@ void mouseJumpPrank(int repeats, int distance, int chanceToClick){
 
    int randClick = random(0,100);
    if ( randClick < chanceToClick){
-     mouseClick(); 
+     mouseClick();
    }
    
    executeDelay(5,10);
@@ -105,7 +110,7 @@ void mouseWheelPrank(int repeats){
 }
 
 void keyboardTypePrank(int repeats){
-  Serial.println("keyboardType: "); Serial.println(repeats);
+  Serial.print("keyboardType: "); Serial.println(repeats);
 
   for (int i=0; i<repeats; i++){
     int randWord = random(1, 5);
@@ -136,7 +141,7 @@ void keyboardTypePrank(int repeats){
 }
 
 void keyboardHoldKeyPrank(int repeats){
-  Serial.println("keyboardHoldKey: "); Serial.println(repeats);
+  Serial.print("keyboardHoldKey: "); Serial.println(repeats);
   
   char holdKey = KEY_LEFT_CTRL;
   
@@ -177,7 +182,7 @@ void checkDelayLevel(){
 }
 
 void startRandSeed(){
-  int seed = analogRead(0)+analogRead(1);
+  int seed = analogRead(0)+analogRead(1)-analogRead(3);
   Serial.print("Seed: "); Serial.println(seed);
   randomSeed(seed);
 }
@@ -200,6 +205,8 @@ void jump(int howFar){
 }
 
 void moveWheel(){
+  Serial.println("Wheel");
+  
   Mouse.move ( 0 ,0, -20);
   delay (150);
   Mouse.move ( 0 ,0, 20);
@@ -210,15 +217,17 @@ void moveWheel(){
 }
 
 void jitter(int duration){
+  Serial.println("Jitter");
+  
   int i = 0;
   while (i < duration){
-    Mouse.move(10,10);
+    Mouse.move(15,15);
     delay (10);
-    Mouse.move(-10, 0);
+    Mouse.move(-15, 0);
     delay (10);
-    Mouse.move(10,-10);
+    Mouse.move(15,-15);
     delay(10);
-    Mouse.move (-10,0);
+    Mouse.move (-15,0);
     delay (10);
     i++;
   } 
