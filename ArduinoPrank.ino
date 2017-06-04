@@ -1,7 +1,9 @@
 /*
 Keyboard and mouse Prank using Arduino Leonardo
 */
- 
+#include <Mouse.h>
+#include <Keyboard.h>
+
 // Configs
 int delayLevel = 5; //1-10
 
